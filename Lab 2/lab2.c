@@ -12,34 +12,41 @@ double pi = 3.14159265359;
 // Navigation Menu
 int menu()
 {
-    int menu_decision = 3;
+    int menu_decision = 6;
     //printf("[!] Would you like to receive calculations for a hot tub or pool? (1 = Hot Tub | 2 = Pool) ");
     printf("[!] ------------------------- Menu ----------------------- [!] \n");
-    printf(" | • Option 1: Calculate volume and capacity of a Hot Tub. \n");
-    printf(" | • Option 2: Calculate volume and capacity of a Pool. \n");
-    printf(" | • Option 3: Run Factorial function. \n");
+    printf(" | • Option 1: Run volume + capacity calculations \n");
+    printf(" | • Option 2: Run Factorial function \n");
+    printf(" | • Option 3: Run Towers of Hanoi \n");
+    printf(" | • Option 4: Run Fibonacci Numbers \n");
+    printf(" | • Option 5: Run Sum of N \n");
     printf("[!] ------------------------------------------------------ [!] \n");
     printf("Please return the number of the option you want to run: ");
     scanf("%d", &menu_decision);
 
     switch(menu_decision){
         case 1:
-            printf("  Choice selected: Hot Tub\n");
+            printf("  Choice selected: Hot Tub + Pool Calculations\n");
             break;
         case 2:
-            printf("  Choice selected: Pool\n");
-            break;
-        case 3:
             printf("  Choice selected: Factorial\n");
             break;
+        case 3:
+            printf("  Choice selected: Towers of Hanoi");
+            break;
+        case 4:
+            printf("  Choice selected: Fibonacci Numbers");
+            break;
+        case 5:
+            printf("  Choice selected: Sum of N");
         default:
-            printf("  Please type 1 for Hot Tub and 2 for Pool.\n");
+            printf("  Please type the number corresponding to the function you want to run.\n");
             scanf("%d", &menu_decision);
-
     }
-
     return(menu_decision);
 }
+
+
 // Function to calculate volume of hot tub
 void calculate_hotTub()
 {
@@ -175,6 +182,25 @@ void calculate_pool()
     printf("  ==========================================================\n");
 }
 // Factorial code from the lab manual
+void calc_choice()
+{
+    int calc_decision = 3;
+    printf("  What would you like to calculate:  \n");
+    printf("  --> 1: Calculate volume and capacity of a Hot Tub. \n");
+    printf("  --> 2: Calculate volume and capacity of a Pool. \n");
+    printf("  Please return the number of the option you want to run: ");
+
+    scanf("%d", &calc_decision);
+    switch(calc_decision){
+        case 1:
+            calculate_hotTub();
+            break;
+        case 2:
+            calculate_pool();
+            break;
+    }
+
+}
 int factorial(int n)
 {
     if (n==0){
@@ -188,37 +214,54 @@ int factorial(int n)
 // Towers of Hanoi Implementation
 void runHanoi (int n , char x, char y, char z )
 {
-    if ( n == 1 )
-    {
-        // p r i n t f . . .
-    }
-else
-    {
-        runHanoi ( n−1,x , z , y ) ;
-        runHanoi ( 1 , x , y , z ) ;
-        runHanoi ( n−1,y , x , z ) ;
-    }
+//    if ( n == 1 )
+//    {
+//        // p r i n t f . . .
+//    }
+//    else
+//    {
+//        runHanoi ( n−1,x , z , y ) ;
+//        runHanoi ( 1 , x , y , z ) ;
+//        runHanoi ( n−1,y , x , z ) ;
+//    }
+    printf("Hanoiiiii");
+}
+
+int fibonacci(int n){
+    printf("fibonacciiiiii");
+    return 1;
+}
+
+int runSum(int n){
+    printf("Sum of NNNNNNN");
+    return 1;
 }
 
 int main()
 {
-	int runProgram = 1; // 0 is false 1 is true
+    printf("[1] Program Starting...\n");
+    int runProgram = 1; // 0 is false 1 is true
 	while(runProgram == 1)
 	{
         int m = menu(); // stores user choice value as int
-        printf("[1] Program Starting...\n");
         int num; // for factorial
         switch(m){
             case 1:
-                calculate_hotTub();
+                calc_choice();
                 break;
             case 2:
-                calculate_pool();
-                break;
-            case 3:
                 printf("  Please input a number for the factorial function: ");
                 scanf("%d", &num);
                 printf("  Factorial result: %d \n", factorial(num));
+                break;
+            case 3:
+                runHanoi(3, 'a', 'b', 'c');
+                break;
+            case 4:
+                fibonacci(3);
+                break;
+            case 5:
+                runSum(3);
                 break;
             default:
                 printf("Error");
