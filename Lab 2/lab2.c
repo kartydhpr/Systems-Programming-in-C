@@ -8,22 +8,24 @@
 */
 #include <stdio.h>
 double pi = 3.14159265359;
+int functionCounter = 0;
 
 // Navigation Menu
 int menu()
 {
     int menu_decision = 6;
-    //printf("[!] Would you like to receive calculations for a hot tub or pool? (1 = Hot Tub | 2 = Pool) ");
-    printf("[!] ------------------------- Menu ----------------------- [!] \n");
-    printf(" | • Option 1: Run volume + capacity calculations \n");
-    printf(" | • Option 2: Run Factorial function \n");
-    printf(" | • Option 3: Run Towers of Hanoi \n");
-    printf(" | • Option 4: Run Fibonacci Numbers \n");
-    printf(" | • Option 5: Run Sum of N \n");
-    printf("[!] ------------------------------------------------------ [!] \n");
-    printf("Please return the number of the option you want to run: ");
-    scanf("%d", &menu_decision);
-
+    while(menu_decision > 5 || menu_decision < 1) { // makes sure program doesn't crash
+        //printf("[!] Would you like to receive calculations for a hot tub or pool? (1 = Hot Tub | 2 = Pool) ");
+        printf("[!] ------------------------- Menu ----------------------- [!] \n");
+        printf(" | • Option 1: Run volume + capacity calculations \n");
+        printf(" | • Option 2: Run Factorial function \n");
+        printf(" | • Option 3: Run Towers of Hanoi \n");
+        printf(" | • Option 4: Run Fibonacci Numbers \n");
+        printf(" | • Option 5: Run Sum of N \n");
+        printf("[!] ------------------------------------------------------ [!] \n");
+        printf("Please return the number of the option you want to run (1-5): ");
+        scanf("%d", &menu_decision);
+    }
     switch(menu_decision){
         case 1:
             printf("  Choice selected: Hot Tub + Pool Calculations\n");
@@ -32,21 +34,20 @@ int menu()
             printf("  Choice selected: Factorial\n");
             break;
         case 3:
-            printf("  Choice selected: Towers of Hanoi");
+            printf("  Choice selected: Towers of Hanoi\n");
             break;
         case 4:
-            printf("  Choice selected: Fibonacci Numbers");
+            printf("  Choice selected: Fibonacci Numbers\n");
             break;
         case 5:
-            printf("  Choice selected: Sum of N");
+            printf("  Choice selected: Sum of N\n");
+            break;
         default:
             printf("  Please type the number corresponding to the function you want to run.\n");
             scanf("%d", &menu_decision);
     }
     return(menu_decision);
 }
-
-
 // Function to calculate volume of hot tub
 void calculate_hotTub()
 {
@@ -181,16 +182,17 @@ void calculate_pool()
     printf("  = • It would cost $%0.2f to fill this pool.            = \n", p_cost);
     printf("  ==========================================================\n");
 }
-// Factorial code from the lab manual
+// Calc usage fucntion
 void calc_choice()
 {
     int calc_decision = 3;
-    printf("  What would you like to calculate:  \n");
-    printf("  --> 1: Calculate volume and capacity of a Hot Tub. \n");
-    printf("  --> 2: Calculate volume and capacity of a Pool. \n");
-    printf("  Please return the number of the option you want to run: ");
-
-    scanf("%d", &calc_decision);
+    while(calc_decision > 2 || calc_decision < 1){ // to make sure the right value is passed and the program doesn't end early
+        printf("  What would you like to calculate:  \n");
+        printf("  --> 1: Calculate volume and capacity of a Hot Tub. \n");
+        printf("  --> 2: Calculate volume and capacity of a Pool. \n");
+        printf("  Please return the number of the option you want to run (1 or 2): ");
+        scanf("%d", &calc_decision);
+    }
     switch(calc_decision){
         case 1:
             calculate_hotTub();
@@ -199,8 +201,8 @@ void calc_choice()
             calculate_pool();
             break;
     }
-
 }
+// Factorial code from the lab manual
 int factorial(int n)
 {
     if (n==0){
@@ -214,27 +216,27 @@ int factorial(int n)
 // Towers of Hanoi Implementation
 void runHanoi (int n , char x, char y, char z )
 {
-//    if ( n == 1 )
-//    {
-//        // p r i n t f . . .
-//    }
-//    else
-//    {
-//        runHanoi ( n−1,x , z , y ) ;
-//        runHanoi ( 1 , x , y , z ) ;
-//        runHanoi ( n−1,y , x , z ) ;
-//    }
-    printf("Hanoiiiii");
+    if ( n == 1 )
+    {
+        printf("  Moved disk 1 from rod %c to rod %c\n", x, y);
+        return;
+    }
+    else
+    {
+        runHanoi(n-1,x , z , y ) ;
+        runHanoi( 1 , x , y , z ) ;
+        runHanoi(n-1,y , x , z ) ;
+    }
 }
 
 int fibonacci(int n){
-    printf("fibonacciiiiii");
+    printf("fibonacciiiiii\n");
     return 1;
 }
 
 int runSum(int n){
-    printf("Sum of NNNNNNN");
-    return 1;
+    printf("Sum of NNNNNNN\n");
+    return 0;
 }
 
 int main()
@@ -244,24 +246,29 @@ int main()
 	while(runProgram == 1)
 	{
         int m = menu(); // stores user choice value as int
-        int num; // for factorial
+        int fact_num; // for factorial
         switch(m){
             case 1:
                 calc_choice();
+                functionCounter += 1;
                 break;
             case 2:
                 printf("  Please input a number for the factorial function: ");
-                scanf("%d", &num);
-                printf("  Factorial result: %d \n", factorial(num));
+                scanf("%d", &fact_num);
+                printf("  The factorial of %d is: %d \n", fact_num,factorial(fact_num));
+                functionCounter += 1;
                 break;
             case 3:
                 runHanoi(3, 'a', 'b', 'c');
+                functionCounter += 1;
                 break;
             case 4:
                 fibonacci(3);
+                functionCounter += 1;
                 break;
             case 5:
                 runSum(3);
+                functionCounter += 1;
                 break;
             default:
                 printf("Error");
@@ -279,6 +286,7 @@ int main()
 		else
 		{
 			runProgram = 0;
+            printf("  You used a total of %d functions.\n", functionCounter);
 			printf("[5] Program terminating...\n");
 		}
 	}
