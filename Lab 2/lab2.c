@@ -7,6 +7,7 @@
 	Due Date: February 11th, 2023
 */
 #include <stdio.h>
+//global variables used or manipulated by multiple functions
 double pi = 3.14159265359;
 int functionCounter = 0;
 
@@ -182,7 +183,7 @@ void calculate_pool()
     printf("  = • It would cost $%0.2f to fill this pool.            = \n", p_cost);
     printf("  ==========================================================\n");
 }
-// Calc usage fucntion
+// Calculations usage function
 void calc_choice()
 {
     int calc_decision = 3;
@@ -236,7 +237,7 @@ int fibonacci(int n){
         return 1;
     }
     else{
-        return (factorial(n-1) + factorial(n-2));
+        return ( fibonacci(n-1) + fibonacci(n-2) );
     }
 }
 // Sum of N implementation
@@ -251,18 +252,19 @@ int runSum(int n){
 }
 
 // mainline logic
-int main()
+void main()
 {
     printf("[1] Program Starting...\n");
     int runProgram = 1; // 0 is false 1 is true
 	while(runProgram == 1)
 	{
-        int m = menu(); // stores user choice value as int
-        int fact_num; // for factorial
-        int disk_num; // for hanoi
-        int fib_num; // for fibonacci
-        int fib_counter; // for fib
-        int sum_num; // for sum of n
+        int m = menu();
+        int fact_num; // factorial
+        int disk_num; // hanoi
+        int fib_num;
+        int fib_counter = 0; // argument passed to fib function for every iteration
+        int fib_iterator; // tracks iteration in for-loop for fib
+        int sum_num; // sum of n
 
         switch(m){
             case 1:
@@ -285,7 +287,7 @@ int main()
                 printf("  Enter a number to compute fibonacci sequence for:  ");
                 scanf("%d", &fib_num);
                 printf("  The first %d numbers in the Fibonacci sequence are: \n", fib_num);
-                for(int c = 1; c <= fib_num; c++){
+                for(fib_iterator = 1; fib_iterator <= fib_num; fib_iterator ++){
                     printf("  %d\n", fibonacci(fib_counter));
                     fib_counter++;
                 }
