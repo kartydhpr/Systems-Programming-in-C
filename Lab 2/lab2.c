@@ -252,7 +252,7 @@ int runSum(int n){
 }
 
 // mainline logic
-void main()
+int main()
 {
     printf("[1] Program Starting...\n");
     int runProgram = 1; // 0 is false 1 is true
