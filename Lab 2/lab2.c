@@ -1,9 +1,9 @@
 /*
-    Author: Karteikay Dhuper
 	Description: Lab 02
-	Refactors code from Lab 1 to calculate the volume, capacity, and cost required
-	to fill a pool and a hot tub given information about its dimensions. While also
-    adding additional recursive functionality like Factorial,
+	Refactors code from Lab 1 to calculate the volume and capacity of
+    a pool or hot tub given information about its dimensions.
+    This lab also adds additional recursive functionality like finding
+    the Sum of N, Tower of Hanoi, and Fibonacci calculations.
 	Due Date: February 11th, 2023
 */
 #include <stdio.h>
@@ -212,33 +212,45 @@ int factorial(int n)
         return n * factorial(n-1);
     }
 }
-
 // Towers of Hanoi Implementation
-void runHanoi (int n , char x, char y, char z )
+void runHanoi (int n , char x, char y, char z)
 {
+    // from lab manual
     if ( n == 1 )
     {
         printf("  Moved disk 1 from rod %c to rod %c\n", x, y);
-        return;
     }
     else
     {
         runHanoi(n-1,x , z , y ) ;
-        runHanoi( 1 , x , y , z ) ;
-        runHanoi(n-1,y , x , z ) ;
+        printf("  Moved disk %d from rod %c to rod %c\n", n, x, y);
+        runHanoi(n-1,z , y , x ) ;
+    }
+}
+// Fibonacci implementation
+int fibonacci(int n){
+    if (n==0){
+        return 0;
+    }
+    else if (n==1){
+        return 1;
+    }
+    else{
+        return (factorial(n-1) + factorial(n-2));
+    }
+}
+// Sum of N implementation
+int runSum(int n){
+    if (n!=0)
+    {
+        return n + runSum(n-1);
+    }
+    else{
+        return n;
     }
 }
 
-int fibonacci(int n){
-    printf("fibonacciiiiii\n");
-    return 1;
-}
-
-int runSum(int n){
-    printf("Sum of NNNNNNN\n");
-    return 0;
-}
-
+// mainline logic
 int main()
 {
     printf("[1] Program Starting...\n");
@@ -247,31 +259,46 @@ int main()
 	{
         int m = menu(); // stores user choice value as int
         int fact_num; // for factorial
+        int disk_num; // for hanoi
+        int fib_num; // for fibonacci
+        int fib_counter; // for fib
+        int sum_num; // for sum of n
+
         switch(m){
             case 1:
                 calc_choice();
                 functionCounter += 1;
                 break;
             case 2:
-                printf("  Please input a number for the factorial function: ");
+                printf("  Enter the number you'd like to find the factorial for: ");
                 scanf("%d", &fact_num);
-                printf("  The factorial of %d is: %d \n", fact_num,factorial(fact_num));
+                printf("  The factorial of %d is %d \n", fact_num,factorial(fact_num));
                 functionCounter += 1;
                 break;
             case 3:
-                runHanoi(3, 'a', 'b', 'c');
+                printf("  Enter the number of disks: ");
+                scanf("%d", &disk_num);
+                runHanoi(disk_num, 'a', 'c', 'b');
                 functionCounter += 1;
                 break;
             case 4:
-                fibonacci(3);
+                printf("  Enter a number to compute fibonacci sequence for:  ");
+                scanf("%d", &fib_num);
+                printf("  The first %d numbers in the Fibonacci sequence are: \n", fib_num);
+                for(int c = 1; c <= fib_num; c++){
+                    printf("  %d\n", fibonacci(fib_counter));
+                    fib_counter++;
+                }
                 functionCounter += 1;
                 break;
             case 5:
-                runSum(3);
+                printf("  Enter a number to find the summation of: ");
+                scanf("%d", &sum_num);
+                printf("  The sum of %d is %d\n", sum_num,runSum(sum_num));
                 functionCounter += 1;
                 break;
             default:
-                printf("Error");
+                printf("You fell off the game world");
         }
 
 		printf("[4] Do you want to run the program again? (y/n): ");
