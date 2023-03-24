@@ -46,9 +46,29 @@ void insertFront(struct Student **head, char *firstName, char *lastName, char *m
     new_student->next = *head;
     *head = new_student;
 }
-// insert a node in the middle of the list
-void insertMiddle(){
 
+// insert a node in the middle of the list
+void insertMiddle(struct Student **head, char *firstName, char *lastName, char *major, float *gpa, int position){
+    struct Student *new_Student, *temp;
+
+    new_Student = (struct Student*)malloc(sizeof(struct Student));
+    strcpy(new_Student->firstName, firstName);
+    strcpy(new_Student->lastName, lastName);
+    strcpy(new_Student->major, major);
+    new_Student->gpa = *gpa;
+    new_Student->next = NULL;
+    temp = *head;
+
+    for(int i = 0; i < position-2 && temp != NULL; i++) {
+        temp = temp->next;
+    }
+    // control flow to handle outcome if there is no way to insert into middle
+    if(temp == NULL) {
+        printf("The position doesn't exist in the data structure.\n");
+        return;
+    }
+    new_Student->next = temp->next;
+    temp->next = new_Student;
 }
 
 // insert a node at the end of the list
@@ -73,8 +93,20 @@ void insertEnd(struct Student **head, char *firstName, char *lastName, char *maj
 }
 
 // delete the first node in the list
-void deleteFront(){
+void deleteFront(struct Student **head){
+    // check if list is empty
+    if (*head == NULL) {
+        printf("There are no students to delete....\n");
+        return;
+    }
 
+    // store the first node in a temporary variable
+    struct Student *temp = *head;
+    // move the head to point to the second node
+    *head = (*head)->next;
+    // free the memory allocated to the first node
+    free(temp);
+    printf("Deleted the first student in the list.\n");
 }
 
 // delete a node in the middle of the list
@@ -83,8 +115,25 @@ void deleteMiddle(){
 }
 
 // delete a node at the end of the list
-void deleteEnd(){
+void deleteEnd(struct Student **head){
+    if (*head == NULL) {
+        printf("There are no students to delete...\n");
+        return;
+    }
 
+    if ((*head)->next == NULL) { // if there is only one node in the list
+        free(*head); // free the memory allocated for the node
+        *head = NULL; // set head to NULL to indicate empty list
+        return;
+    }
+
+    struct Student *temp = *head;
+    while (temp->next->next != NULL) { // traverse to the second last node
+        temp = temp->next;
+    }
+
+    free(temp->next); // free the memory allocated for the last node
+    temp->next = NULL; // set the next pointer of second last node to NULL
 }
 
 // traverse the list based on key value in the data portion of the node
@@ -106,7 +155,7 @@ void printList(struct Student *start){
     // Traverse the list and print the data in each node.
     struct Student *current_student = start;
     while (current_student != NULL) {
-        printf("(%s, %s, %s, %f) -> ", current_student->firstName, current_student->lastName, current_student->major, current_student->gpa);
+        printf("(%s, %s, %s, %f) --> ", current_student->firstName, current_student->lastName, current_student->major, current_student->gpa);
         current_student = current_student->next;
     }
     printf("NULL\n");
@@ -114,13 +163,16 @@ void printList(struct Student *start){
 // Navigation Menu
 int menu()
 {
-    int menu_decision = 5;
-    while(menu_decision > 4 || menu_decision < 1) { // makes sure program doesn't crash
+    int menu_decision = 8;
+    while(menu_decision > 7 || menu_decision < 1) { // makes sure program doesn't crash
         printf("[!] ------------------------------------ Menu ---------------------------------- [!] \n");
         printf(" | • Option 1: Print all students \n");
         printf(" | • Option 2: INSERT FRONT \n");
         printf(" | • Option 3: INSERT BACK \n");
-        printf(" | • Option 4: Find a particular student \n");
+        printf(" | • Option 4: DELETE FRONT \n");
+        printf(" | • Option 5: DELETE BACK \n");
+        printf(" | • Option 6: INSERT MIDDLE \n");
+        printf(" | • Option 7: DELETE MIDDLE \n");
         printf("[!] ---------------------------------------------------------------------------- [!] \n");
         printf("Please return the number of the option you want to run (1-4): ");
         scanf("%d", &menu_decision);
@@ -146,6 +198,7 @@ int main()
         char scanLName[50];
         char scanMajor[50];
         float scanGPA;
+        int insertPos;
 
         switch(m){ // program logic unfolds based on which option user chooses
             case 1:
@@ -165,6 +218,7 @@ int main()
                 printList(head); // print the updated list
                 break;
             case 3:
+                printf("Choice confirmed: INSERT END\n");
                 printf("Enter first name: ");
                 scanf("%s", &scanFName);
                 printf("Enter last name: ");
@@ -177,11 +231,36 @@ int main()
                 printList(head);
                 break;
             case 4:
-                printf("Choice confirmed: Find a student\n");
+                printf("Choice confirmed: DELETE FRONT\n");
+                deleteFront(&head); // delete the first student in the list
+                printList(head); // print the updated list
                 break;
+            case 5:
+                printf("Choice confirmed: DELETE END\n");
+                deleteEnd(&head); // delete the last student in the list
+                printList(head); // print the updated list
+                break;
+            case 6:
+                printf("Choice confirmed: INSERT MIDDLE\n");
+                printf("Which position would you like to insert the new student: ");
+                scanf("%d", &insertPos);
+                printf("Please enter the students details: \n");
+                printf("Enter first name: ");
+                scanf("%s", &scanFName);
+                printf("Enter last name: ");
+                scanf("%s", &scanLName);
+                printf("Enter major: ");
+                scanf("%s", &scanMajor);
+                printf("Enter GPA: ");
+                scanf("%f", &scanGPA);
+                insertMiddle(&head, scanFName, scanLName, scanMajor, &scanGPA, insertPos);
+                printList(head);
+            case 7:
+                printf("Choice confirmed: DELETE MIDDLE\n");
+
         }
 		printf("[4] Do you want to run the program again? (y/n): ");
-		char decision ;
+		char decision;
 		scanf(" %c", &decision);
 
 		if (decision == 'y')
