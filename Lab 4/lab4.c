@@ -1,7 +1,7 @@
 /*
 	Description: Lab 04
-    This program utilizes linked lists to build data structures
-    and performs various functions on it.
+    This program utilizes linked lists to build a data structure
+    of students and their information and performs various functions on it.
 	Due Date: March 26th, 2023
 */
 
@@ -112,8 +112,10 @@ void deleteFront(struct Student **head){
 // delete a node in the middle of the list
 void deleteMiddle(struct Student **head, int position) {
     // If linked list is empty
-    if (*head == NULL)
+    if (*head == NULL){
+        printf("There are no students to delete....\n");
         return;
+    }
 
     // Store head node
     struct Student* tempHead = *head;
@@ -172,7 +174,7 @@ void traverse(struct Student *head) {
     printf("Traversing the list:\n");
     while (current != NULL) {
         printf("(Name: %s %s, Major: %s, GPA: %.2f) --> ", current->firstName, current->lastName, current->major, current->gpa);
-        current = current->next;
+        current = current->next; // go the next node if current is not null
     }
     printf("NULL\n");
 }
@@ -190,23 +192,25 @@ void printList(struct Student *head) {
 
 // find a particular node by an index number
 struct Student* lookUpByIndex(struct Student* head, int index) {
+    // validate index
     if (index < 1) {
         printf("Invalid index: %d. Index must be greater than or equal to 1.\n", index);
         return NULL;
     }
 
+    // init counter and pointer to current student then traverse until index is reached
     int i = 1;
     struct Student* current = head;
     while (current != NULL && i < index) {
         current = current->next;
         i++;
     }
-
+    // handle out of range exception
     if (current == NULL) {
         printf("Index %d out of range.\n", index);
         return NULL;
     }
-
+    // return valid index
     return current;
 }
 
@@ -219,7 +223,8 @@ void printStudent(struct Student *student) {
 
 // function to get position in list for inserting student based on gpa in main
 int getPosition(struct Student* head, struct Student* node) {
-    int position = 1;
+    int position = 1; // position to be incremented through while loop
+    //traverse until head is null or head node is equal to given node
     while (head != NULL && head != node) {
         head = head->next;
         position++;
@@ -262,7 +267,6 @@ int main()
         char scanLName[50];
         char scanMajor[50];
         float scanGPA;
-        int insertPos;
         int deletePos;
 
         switch(m){ // program logic unfolds based on which option user chooses
@@ -271,7 +275,7 @@ int main()
                 printList(head);
                 break;
             case 2:
-                printf("Choice confirmed: Insert new students\n");
+                printf("Choice confirmed: Insert new student\n");
                 printf("Enter first name: ");
                 scanf("%s", &scanFName);
                 printf("Enter last name: ");
@@ -307,11 +311,11 @@ int main()
                 traverse(head);
                 break;
             case 3:
-                printf("Choice confirmed: Delete existing students\n");
+                printf("Choice confirmed: Delete existing student\n");
                 printf("Enter the index of the student you want to delete: ");
                 scanf("%d", &deletePos);
 
-                // Counting the number of nodes in the linked list
+                // Determine number of nodes in linked list
                 int count = 0;
                 struct Student *current = head;
                 while(current != NULL) {
@@ -319,13 +323,13 @@ int main()
                     current = current->next;
                 }
 
-                // Check if the user input is within the range of the list size
+                // Validate that user input is inside the range of the list size
                 if(deletePos < 1 || deletePos > count) {
                     printf("Invalid index entered.\n");
                     break;
                 }
 
-                // Delete the node at the specified index
+                // Delete the node at specified index
                 if(deletePos == 1) {
                     deleteFront(&head);
                 } else if(deletePos == count) {
