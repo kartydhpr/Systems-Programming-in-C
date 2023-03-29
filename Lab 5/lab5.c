@@ -14,8 +14,8 @@
 struct Student{
     char firstName[50];
     char lastName[50];
-    char major[50];
-    float gpa;
+    char puid[50];
+    char age [50];
     struct Student *next;
 };
 
@@ -25,13 +25,13 @@ void createListNoNodes(struct Student **head){
 }
 
 // creates a list with a single mode, data to fill node is a precondition and is passed as a parameter
-void createListNode(struct Student **head, char *firstName, char *lastName, char *major, float *gpa) {
+void createListNode(struct Student **head, char *firstName, char *lastName, char *puid, char *age) {
     struct Student *new_student = (struct student*) malloc(sizeof(struct Student)); // allocate memory for a new node
     // set new nodes data field to value from arguments
     strncpy(new_student->firstName, firstName, 50); //strncpy needs to be used to copy chars from argument to new node
     strncpy(new_student->lastName, lastName, 50);
-    strncpy(new_student->major, major, 50);
-    memcpy(&new_student -> gpa, &gpa, sizeof(float));
+    strncpy(new_student->puid, puid, 50);
+    strncpy(new_student->age, age, 50);
     new_student->next = NULL;
     *head = new_student;
 }
@@ -39,12 +39,12 @@ void createListNode(struct Student **head, char *firstName, char *lastName, char
 // ------- STACK CODE -------
 
 // insert a node at the end of the linked list
-void pushLL(struct Student **head, char *firstName, char *lastName, char *major, float *gpa){
+void pushLL(struct Student **head, char *firstName, char *lastName, char *puid, char *age){
     struct Student *new_student = (struct student*) malloc(sizeof(struct Student));
     strncpy(new_student->firstName, firstName, 50);
     strncpy(new_student->lastName, lastName, 50);
-    strncpy(new_student->major, major, 50);
-    new_student->gpa = *gpa;
+    strncpy(new_student->puid, puid, 50);
+    strncpy(new_student->age, age, 50);
     new_student->next = NULL;
     // if list is empty set header pointer to point to the new node
     if (*head == NULL) {
@@ -85,12 +85,12 @@ void popLL(struct Student **head){
 // ------- QUEUE CODE -------
 
 // insert a node at the end of the linked list
-void enqueueLL(struct Student **head, char *firstName, char *lastName, char *major, float *gpa){
+void enqueueLL(struct Student **head, char *firstName, char *lastName, char *puid, char *age){
     struct Student *new_student = (struct student*) malloc(sizeof(struct Student));
     strncpy(new_student->firstName, firstName, 50);
     strncpy(new_student->lastName, lastName, 50);
-    strncpy(new_student->major, major, 50);
-    new_student->gpa = *gpa;
+    strncpy(new_student->puid, puid, 50);
+    strncpy(new_student->age, age, 50);
     new_student->next = NULL;
     // if list is empty set header pointer to point to the new node
     if (*head == NULL) {
@@ -128,7 +128,7 @@ void printQueue(struct Student *head) {
     struct Student *current = head;
     printf("Traversing the list:\n");
     while (current != NULL) {
-        printf("(Name: %s %s, Major: %s, GPA: %.2f) --> ", current->firstName, current->lastName, current->major, current->gpa);
+        printf("(Name: %s %s, PUID: %s, Age: %s) --> ", current->firstName, current->lastName, current->puid, current->age);
         current = current->next; // go the next node if current is not null
     }
     printf("NULL\n");
@@ -139,7 +139,7 @@ void printStack(struct Student *head) {
     struct Student *current = head;
     printf("Here are all the students:\n");
     while (current != NULL) {
-        printf("[Name: %s %s, Major: %s, GPA: %.2f], \n", current->firstName, current->lastName, current->major, current->gpa);
+        printf("[Name: %s %s, PUID: %s, Age: %s], \n", current->firstName, current->lastName, current->puid, current->age);
         current = current->next;
     }
     printf("NULL\n");
@@ -148,8 +148,8 @@ void printStack(struct Student *head) {
 // print information in the current node, firstname, lastname, major, and GPA
 void printStudent(struct Student *student) {
     printf("Name: %s %s\n", student->firstName, student->lastName);
-    printf("Major: %s\n", student->major);
-    printf("GPA: %.2f\n", student->gpa);
+    printf("PUID: %s\n", student->puid);
+    printf("Age: %s\n", student->age);
 }
 
 // Navigation Menu
@@ -191,8 +191,8 @@ int main()
         // variables and data structures used by mainline logic
         char scanFName[50];
         char scanLName[50];
-        char scanMajor[50];
-        float scanGPA;
+        char scanPUID[50];
+        char scanAGE[50];
 
         switch(m){ // program logic unfolds based on which option user chooses
             case 1:
@@ -201,10 +201,10 @@ int main()
                 scanf("%s", &scanFName);
                 printf("Enter last name: ");
                 scanf("%s", &scanLName);
-                printf("Enter abbreviated major (example: cit) : ");
-                scanf("%s", &scanMajor);
-                printf("Enter GPA: ");
-                scanf("%f", &scanGPA);
+                printf("Enter PUID : ");
+                scanf("%s", &scanPUID);
+                printf("Enter age: ");
+                scanf("%s", &scanAGE);
                 break;
             case 2:
                 printf("Choice confirmed: Pop from LL Stack \n");
@@ -221,10 +221,10 @@ int main()
                 scanf("%s", &scanFName);
                 printf("Enter last name: ");
                 scanf("%s", &scanLName);
-                printf("Enter abbreviated major (example: cit) : ");
-                scanf("%s", &scanMajor);
-                printf("Enter GPA: ");
-                scanf("%f", &scanGPA);
+                printf("Enter PUID : ");
+                scanf("%s", &scanPUID);
+                printf("Enter age: ");
+                scanf("%s", &scanAGE);
                 break;
             case 6:
                 printf("Choice confirmed: Pop from Array Stack \n");
