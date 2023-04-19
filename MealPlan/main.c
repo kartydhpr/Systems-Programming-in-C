@@ -1,13 +1,13 @@
 #include <gtk/gtk.h>
 
 // Function called when the button is clicked
-void on_button_clicked(GtkButton *button, gpointer data)
-{
+void on_button_clicked(GtkButton *button, gpointer data) {
     GtkTextView *text_view = GTK_TEXT_VIEW(data);
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(text_view);
     gtk_text_buffer_insert_at_cursor(buffer, "[ Example recipe ]\n", -1);
 }
 
+// Mainline logic fr
 int main(int argc, char *argv[])
 {
     GtkWidget *window;
@@ -45,6 +45,8 @@ int main(int argc, char *argv[])
     gtk_grid_attach(GTK_GRID(grid), text_field, 0, 1, 2, 1);
     gtk_widget_set_hexpand(text_field, TRUE);
     gtk_widget_set_halign(text_field, GTK_ALIGN_FILL);
+    const gchar *ingredientData = gtk_entry_get_text(GTK_ENTRY(text_field));
+
 
     // create diet label
     diet_label = gtk_label_new("Check your dietary restrictions below: ");
