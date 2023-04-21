@@ -1,0 +1,16 @@
+insert 45
+insert 10
+insert 9
+insert 11
+traverse in-order
+insert 70
+insert 80
+insert 7
+traverse pre-order
+traverse post-order
+traverse in-order
+delete 7
+delete 10 
+traverse in-order
+insert 100
+delete 101

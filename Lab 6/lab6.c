@@ -15,28 +15,54 @@
 // tree node
 struct Node{
     int value;
-    struct Node *left;
-    struct Node *right;
+    struct Node* left;
+    struct Node* right;
 };
 
 // create an empty binary tree with just a root pointer
-void createTree0(){
-
+struct Node* createTree0(){
+    return NULL;
 }
 
 // create a binary tree with 1 root node, given the int parameter
-void createTree1(int){
-
+struct Node* createTree1(int val){
+    struct Node* root = (struct Node*)malloc(sizeof(struct Node));
+    root->value = val;
+    root->left = NULL;
+    root->right = NULL;
+    return root;
 }
 
 // add a node to the tree, in the correct, ordered position, given the Node parameter
-void addNode(struct Node){ // to be used inside the addNode(int) function
+void addNode(struct Node* root, struct Node* newNode){
+    if (root == NULL) {
+        root = newNode;
+        return;
+    }
 
+    if (newNode->value < root->value) {
+        if (root->left == NULL) {
+            root->left = newNode;
+        } else {
+            addNode(root->left, newNode);
+        }
+    } else {
+        if (root->right == NULL) {
+            root->right = newNode;
+        } else {
+            addNode(root->right, newNode);
+        }
+    }
 }
 
 // add a node to the tree, in the correct, ordered position, given the int value parameter
-void addNodeMenu(int){ // to be used in menu to call the addNode function
+void addNodeMenu(struct Node* root, int value){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->value = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
 
+    addNode(root, newNode);
 }
 
 // delete a node from the tree and maintain the correct order of the tree.
@@ -63,22 +89,6 @@ void traversePostOrderPrint(){ // visit root at the end
 
 }
 
-// Navigation Menu
-int menu()
-{
-    int menu_decision = 12;
-    while(menu_decision > 11 || menu_decision < 1) { // makes sure program doesn't crash
-        printf("[!] ------------------------------------ Menu ---------------------------------- [!] \n");
-        printf(" | • Option 1: Push to Stack \n");
-        printf(" | • Option 2: Pop from Stack \n");
-        printf(" | • Option 3: Empty Stack \n");
-        printf("[!] ---------------------------------------------------------------------------- [!] \n");
-        printf("Please return the number of the option you want to run (1-3): ");
-        scanf("%d", &menu_decision);
-    }
-    return(menu_decision);
-}
-
 // mainline logic
 int main()
 {
@@ -87,13 +97,17 @@ int main()
     int runProgram = 1; // 0 is false 1 is true
 	while(runProgram == 1)
 	{
-        int m = menu(); //display menu with options and store return value
+        // implementation of file I/O
+        FILE *inFile;
+        inFile = fopen("testing.txt", "r"); // open the file for reading
+        if(inFile == NULL){
+            printf("The file could not be opened...\nPlease make sure the file currently exists\n");
+            exit(1);
+        }
+        printf("File opened succesfully!\n");
 
-        // variables and data structures used by mainline logic
+        // implement read logic here - appending lines to array for BST moves
 
-        switch(m){ // program logic unfolds based on which option user chooses
-            case 1:
-                        }
 		printf("Do you want to perform more operations? (y/n): ");
 		char decision;
 		scanf(" %c", &decision);
