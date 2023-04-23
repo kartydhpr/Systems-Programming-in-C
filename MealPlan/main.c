@@ -1,27 +1,75 @@
 #include <gtk/gtk.h>
+#include <string.
+
+gchar *input;
+GtkWidget *window;
+GtkWidget *grid;
+GtkWidget *field_label;
+GtkWidget *text_field;
+GtkWidget *diet_label;
+GtkWidget *check1;
+GtkWidget *check2;
+GtkWidget *check3;
+GtkWidget *check4;
+GtkWidget *button;
+GtkWidget *text_area;
+GtkTextBuffer *text_buffer;
+
+char* remove_spaces(char* strin)
+{
+    int i,j;
+    char *strout=strin;
+    for (i = 0, j = 0; i<strlen(strin); i++,j++)
+    {
+        if (strin[i]!=' ')
+            strout[j]=strin[i];
+        else
+            j--;
+    }
+    strout[j]=0;
+    return strout;
+}
+
+/*
+char ** separate_ing(char * str)
+{
+    char* tokens[50] = {0};
+
+// Split the string in tokens and count the tokens:
+    size_t tokenCount = 0;
+    static size_t const max_token_count = sizeof(tokens) / sizeof(tokens[0]);
+    for (char* token = strtok(str, ",");
+         token != NULL  &&   tokenCount != max_token_count;
+         token = strtok(NULL, ",")) {
+        tokens[tokenCount++] = token;
+    }
+
+    for (size_t i = 0; i != tokenCount; ++i)
+        puts(tokens[i]);
+
+    return tokens;
+}
+*/
 
 // Function called when the button is clicked
 void on_button_clicked(GtkButton *button, gpointer data) {
     GtkTextView *text_view = GTK_TEXT_VIEW(data);
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(text_view);
-    gtk_text_buffer_insert_at_cursor(buffer, "[ Example recipe ]\n", -1);
+    input = gtk_entry_get_text(text_field);
+    char * ingredients = remove_spaces(input);
+    printf("%s\n", ingredients);
+    // char ** ingredients = separate_ing(cleanstr);
+    gtk_text_buffer_insert_at_cursor(buffer, "Title: Baked Cinnamon Apple Slices\n"
+                                             "\n"
+                                             "Ingredients: \n"
+                                             "4 Apples Sliced and Peeled – whatever type of apples I have in my refrigerator\n"
+                                             "1 1/2 tablespoons of Cinnamon\n"
+                                             "1/2 cup of Raisins", -1);
 }
-
 // Mainline logic fr
 int main(int argc, char *argv[])
 {
-    GtkWidget *window;
-    GtkWidget *grid;
-    GtkWidget *field_label;
-    GtkWidget *text_field;
-    GtkWidget *diet_label;
-    GtkWidget *check1;
-    GtkWidget *check2;
-    GtkWidget *check3;
-    GtkWidget *check4;
-    GtkWidget *button;
-    GtkWidget *text_area;
-    GtkTextBuffer *text_buffer;
+
 
     gtk_init(&argc, &argv);
 
@@ -45,7 +93,7 @@ int main(int argc, char *argv[])
     gtk_grid_attach(GTK_GRID(grid), text_field, 0, 1, 2, 1);
     gtk_widget_set_hexpand(text_field, TRUE);
     gtk_widget_set_halign(text_field, GTK_ALIGN_FILL);
-    const gchar *ingredientData = gtk_entry_get_text(GTK_ENTRY(text_field));
+    //const gchar *ingredientData = gtk_entry_get_text(GTK_ENTRY(text_field));
 
 
     // create diet label
@@ -58,12 +106,12 @@ int main(int argc, char *argv[])
     gtk_widget_set_hexpand(check1, TRUE);
     gtk_widget_set_halign(check1, GTK_ALIGN_FILL);
 
-    check2 = gtk_check_button_new_with_label("Halal");
+    check2 = gtk_check_button_new_with_label("Gluten free");
     gtk_grid_attach(GTK_GRID(grid), check2, 1, 3, 1, 1);
     gtk_widget_set_hexpand(check2, TRUE);
     gtk_widget_set_halign(check2, GTK_ALIGN_FILL);
 
-    check3 = gtk_check_button_new_with_label("Kosher");
+    check3 = gtk_check_button_new_with_label("Vegan");
     gtk_grid_attach(GTK_GRID(grid), check3, 0, 4, 1, 1);
     gtk_widget_set_hexpand(check3, TRUE);
     gtk_widget_set_halign(check3, GTK_ALIGN_FILL);
