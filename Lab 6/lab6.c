@@ -10,16 +10,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-//global variables
-
-// tree node
+// singular tree node
 struct Node{
     int value;
     struct Node* left;
     struct Node* right;
 };
 
-// create an empty binary tree with just a root pointer
+// create an empty binary tree with just a NULL root pointer
 struct Node* createTree0(){
     return NULL;
 }
@@ -33,6 +31,7 @@ struct Node* createTree1(int val){
     return root;
 }
 
+// add a node to the tree, in the correct, ordered position, given the Node parameter
 void addNode(struct Node** rootPtr, struct Node* newNode){
     if (*rootPtr == NULL) {
         *rootPtr = newNode;
@@ -54,6 +53,7 @@ void addNode(struct Node** rootPtr, struct Node* newNode){
     }
 }
 
+// add a node to the tree, in the correct, ordered position, given the int value parameter -- to be used in main
 void addNodeMenu(struct Node** rootPtr, int value){
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->value = value;
@@ -65,20 +65,16 @@ void addNodeMenu(struct Node** rootPtr, int value){
 
 // delete a node from the tree and maintain the correct order of the tree.
 struct Node* deleteNode(struct Node* root, int value) {
-    // If the root is NULL, the node to be deleted was not found, so return NULL.
     if (root == NULL) {
         return root;
     }
-    // If the value to be deleted is less than the value of the root, recursively call deleteNode on the left subtree of the root.
     if (value < root->value) {
         root->left = deleteNode(root->left, value);
     }
-        // If the value to be deleted is greater than the value of the root, recursively call deleteNode on the right subtree of the root.
     else if (value > root->value) {
         root->right = deleteNode(root->right, value);
     }
-        // If the value to be deleted is equal to the value of the root, we have found the node to be deleted.
-    else {
+    else { // If the value to be deleted is equal to the value of the root, we have found the node to be deleted.
         // If the root has no left child, replace the root with its right child (which may be NULL), free the root, and return the right child.
         if (root->left == NULL) {
             struct Node* temp = root->right;
@@ -153,12 +149,11 @@ void traversePostOrderPrint(struct Node* root) {
 // mainline logic
 int main()
 {
-    printf("Program Starting...\n");
+    printf("[1] Program Starting...\n");
 
     char fileLine[100];
     char fileCommand[20];
     int value;
-
 
     int runProgram = 1; // 0 is false 1 is true
 	while(runProgram == 1)
@@ -168,37 +163,35 @@ int main()
 
         // implementation of file I/O
         FILE *inFile;
-        inFile = fopen("testing.txt", "r"); // open the file for reading
+        inFile = fopen("testing.txt", "r"); // open the file for reading - file needs to be in same directory
         if(inFile == NULL){
             printf("The file could not be opened...\nPlease make sure the file currently exists\n");
             exit(1);
         }
-        printf("File opened succesfully!\n");
-
-        addNodeMenu(&root, 45);
-        addNodeMenu(&root, 25);
-        addNodeMenu(&root, 65);
-        addNodeMenu(&root, 15);
-        printf("\nIn order print: ");
-        traverseInOrderPrint(root);
-        printf("\nPre order print: ");
-        traversePreOrderPrint(root);
-        printf("\nPost order print: ");
-        traversePostOrderPrint(root);
-        printf("\n\n\n");
+        printf("[2] Input file [testing.txt] opened succesfully!\n");
+        printf("[3] Running commands from input file on Binary Search Tree...");
+        // for testing and debugging purposes
+//        addNodeMenu(&root, 1);
+//        printf("\nIn order print: ");
+//        traverseInOrderPrint(root);
+//        printf("\nPre order print: ");
+//        traversePreOrderPrint(root);
+//        printf("\nPost order print: ");
+//        traversePostOrderPrint(root);
+//        printf("\n\n\n");
 
         // implement read logic here
-        while(fgets(fileLine, sizeof(fileLine), inFile) != NULL){
-            sscanf(fileLine, "%s" "%d", fileCommand, &value);
+        while(fgets(fileLine, sizeof(fileLine), inFile) != NULL){ // while loop runs as long as there
+            sscanf(fileLine, "%s" "%d", fileCommand, &value); // parses each line in the file and assigns the String to the fileCommand variable and the digits to the value variable
             // logic for insert
-            if (strcmp(fileCommand, "insert") == 0){
-                if(root == NULL) { // if it's the first insert command create a tree with the passed value
-                    createTree1(value);
+            if (strcmp(fileCommand, "insert") == 0){ // checks if the string parsed and stored from the file's line is "insert"
+                if(root == NULL) {
+                    root = createTree1(value); // assigns the root variables to the first value passed
                 }
                 else{
                     if(traverseFind (root, value) == 1) // if the value is already inside the tree
                         printf("This integer has already been added to the tree...\n");
-                    else
+                    else // if it's not the first value or it doesn't already exist add the node
                         addNodeMenu(&root, value);
                 }
             }
@@ -209,7 +202,7 @@ int main()
                 }
                 else{
                     if(traverseFind(root, value) == 0){
-                        printf("\nThis value does not exist in the tree...\n");
+                        printf("\n   [!] This value does not exist in the tree...\n");
                     }
                     else{
                         deleteNode(root, value);
@@ -224,15 +217,15 @@ int main()
                     continue;
                 }
                 if(strcmp(orderBy, "pre-order") == 0){
-                    printf("\nPre-order print: ");
+                    printf("\n   --> Pre-order print: ");
                     traversePreOrderPrint(root);
                 }
                 else if(strcmp(orderBy, "in-order") == 0){
-                    printf("\nIn-order print: ");
+                    printf("\n   --> In-order print: ");
                     traverseInOrderPrint(root);
                 }
                 else if(strcmp(orderBy, "post-order") == 0){
-                    printf("\nPost-order print: ");
+                    printf("\n   --> Post-order print: ");
                     traversePostOrderPrint(root);
                 }
                 else{
@@ -240,8 +233,7 @@ int main()
                 }
 ;            }
         }
-
-		printf("\nDo you want to run the program again? (y/n): ");
+		printf("[4] Do you want to run the program again? (y/n): ");
 		char decision;
 		scanf(" %c", &decision);
 
@@ -252,7 +244,7 @@ int main()
 		else
 		{
 			runProgram = 0;
-			printf("\nProgram terminating...\n");
+			printf("[5] Program terminating...\n");
 		}
 	}
 }
