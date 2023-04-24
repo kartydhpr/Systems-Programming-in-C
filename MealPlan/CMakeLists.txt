@@ -11,6 +11,6 @@ link_directories(${GTK3_LIBRARY_DIRS})
 
 add_definitions(${GTK3_CFLAGS_OTHER})
 
-add_executable(myprogram main.c)
+add_executable(myprogram main.c cJSON/cJSON.h cJSON/cJSON.c)
 
 target_link_libraries(myprogram ${GTK3_LIBRARIES})

@@ -33,36 +33,34 @@ struct Node* createTree1(int val){
     return root;
 }
 
-// add a node to the tree, in the correct, ordered position, given the Node parameter
-void addNode(struct Node* root, struct Node* newNode){
-    if (root == NULL) {
-        root = newNode;
+void addNode(struct Node** rootPtr, struct Node* newNode){
+    if (*rootPtr == NULL) {
+        *rootPtr = newNode;
         return;
     }
 
-    if (newNode->value < root->value) {
-        if (root->left == NULL) {
-            root->left = newNode;
+    if (newNode->value < (*rootPtr)->value) {
+        if ((*rootPtr)->left == NULL) {
+            (*rootPtr)->left = newNode;
         } else {
-            addNode(root->left, newNode);
+            addNode(&((*rootPtr)->left), newNode);
         }
     } else {
-        if (root->right == NULL) {
-            root->right = newNode;
+        if ((*rootPtr)->right == NULL) {
+            (*rootPtr)->right = newNode;
         } else {
-            addNode(root->right, newNode);
+            addNode(&((*rootPtr)->right), newNode);
         }
     }
 }
 
-// add a node to the tree, in the correct, ordered position, given the int value parameter
-void addNodeMenu(struct Node* root, int value){
+void addNodeMenu(struct Node** rootPtr, int value){
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->value = value;
     newNode->left = NULL;
     newNode->right = NULL;
 
-    addNode(root, newNode);
+    addNode(rootPtr, newNode);
 }
 
 // delete a node from the tree and maintain the correct order of the tree.
@@ -115,11 +113,11 @@ int traverseFind(struct Node* root, int value) {
     if (value < root->value) {
         return traverseFind(root->left, value);
     }
-        // If the value to be found is greater than the value of the root, recursively call traverseFind on the right subtree of the root.
+    // If the value to be found is greater than the value of the root, recursively call traverseFind on the right subtree of the root.
     else if (value > root->value) {
         return traverseFind(root->right, value);
     }
-        // If the value to be found is equal to the value of the root, we have found the node with the value we were looking for, so return true.
+    // If the value to be found is equal to the value of the root, we have found the node with the value we were looking for, so return true.
     else {
         return 1; // true
     }
@@ -165,7 +163,6 @@ int main()
     int runProgram = 1; // 0 is false 1 is true
 	while(runProgram == 1)
 	{
-
         struct Node *root; // init root node of BST
         createTree0(&root); // create tree with root being null
 
@@ -178,14 +175,73 @@ int main()
         }
         printf("File opened succesfully!\n");
 
+        addNodeMenu(&root, 45);
+        addNodeMenu(&root, 25);
+        addNodeMenu(&root, 65);
+        addNodeMenu(&root, 15);
+        printf("\nIn order print: ");
+        traverseInOrderPrint(root);
+        printf("\nPre order print: ");
+        traversePreOrderPrint(root);
+        printf("\nPost order print: ");
+        traversePostOrderPrint(root);
+        printf("\n\n\n");
+
         // implement read logic here
         while(fgets(fileLine, sizeof(fileLine), inFile) != NULL){
-            scanf(fileLine, "%s" "%d", fileCommand, &value);
-
+            sscanf(fileLine, "%s" "%d", fileCommand, &value);
+            // logic for insert
+            if (strcmp(fileCommand, "insert") == 0){
+                if(root == NULL) { // if it's the first insert command create a tree with the passed value
+                    createTree1(value);
+                }
+                else{
+                    if(traverseFind (root, value) == 1) // if the value is already inside the tree
+                        printf("This integer has already been added to the tree...\n");
+                    else
+                        addNodeMenu(&root, value);
+                }
+            }
+            // logic for delete
+            else if(strcmp(fileCommand, "delete") == 0){
+                if(root == NULL){
+                    printf("The tree is empty. Nothing to delete!\n");
+                }
+                else{
+                    if(traverseFind(root, value) == 0){
+                        printf("\nThis value does not exist in the tree...\n");
+                    }
+                    else{
+                        deleteNode(root, value);
+                    }
+                }
+            }
+            // logic for traversal
+            else if(strcmp(fileCommand, "traverse") == 0){
+                char orderBy[20];
+                if(sscanf(fileLine, "%s %s", fileCommand, orderBy) != 2){
+                    printf("Absent traversal order\n");
+                    continue;
+                }
+                if(strcmp(orderBy, "pre-order") == 0){
+                    printf("\nPre-order print: ");
+                    traversePreOrderPrint(root);
+                }
+                else if(strcmp(orderBy, "in-order") == 0){
+                    printf("\nIn-order print: ");
+                    traverseInOrderPrint(root);
+                }
+                else if(strcmp(orderBy, "post-order") == 0){
+                    printf("\nPost-order print: ");
+                    traversePostOrderPrint(root);
+                }
+                else{
+                    printf("Invalid traversal order...\n");
+                }
+;            }
         }
 
-
-		printf("Do you want to run the program again? (y/n): ");
+		printf("\nDo you want to run the program again? (y/n): ");
 		char decision;
 		scanf(" %c", &decision);
 
@@ -196,7 +252,7 @@ int main()
 		else
 		{
 			runProgram = 0;
-			printf("[5] Program terminating...\n");
+			printf("\nProgram terminating...\n");
 		}
 	}
 }
