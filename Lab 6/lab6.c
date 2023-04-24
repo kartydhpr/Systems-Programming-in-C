@@ -64,7 +64,7 @@ void addNodeMenu(struct Node** rootPtr, int value){
 }
 
 // delete a node from the tree and maintain the correct order of the tree.
-struct Node* deleteNode(struct Node* root, int value) {
+struct Node* deleteNode(struct Node* root, int value) { // function completed with assistance from GPT-3
     if (root == NULL) {
         return root;
     }
@@ -181,7 +181,7 @@ int main()
 //        printf("\n\n\n");
 
         // implement read logic here
-        while(fgets(fileLine, sizeof(fileLine), inFile) != NULL){ // while loop runs as long as there
+        while(fgets(fileLine, sizeof(fileLine), inFile) != NULL){ // while loop runs as long as there is a line to parse through in input file
             sscanf(fileLine, "%s" "%d", fileCommand, &value); // parses each line in the file and assigns the String to the fileCommand variable and the digits to the value variable
             // logic for insert
             if (strcmp(fileCommand, "insert") == 0){ // checks if the string parsed and stored from the file's line is "insert"
@@ -212,20 +212,20 @@ int main()
             // logic for traversal
             else if(strcmp(fileCommand, "traverse") == 0){
                 char orderBy[20];
-                if(sscanf(fileLine, "%s %s", fileCommand, orderBy) != 2){
-                    printf("Absent traversal order\n");
+                if(sscanf(fileLine, "%s %s", fileCommand, orderBy) != 2){ // !=2 means sscanf was not able to parse 2 strings - meaning absent traversal order
+                    printf("   [!] Traversal order not provided\n");
                     continue;
                 }
                 if(strcmp(orderBy, "pre-order") == 0){
-                    printf("\n   --> Pre-order print: ");
+                    printf("\n   --> Pre-order: ");
                     traversePreOrderPrint(root);
                 }
                 else if(strcmp(orderBy, "in-order") == 0){
-                    printf("\n   --> In-order print: ");
+                    printf("\n   --> In-order: ");
                     traverseInOrderPrint(root);
                 }
                 else if(strcmp(orderBy, "post-order") == 0){
-                    printf("\n   --> Post-order print: ");
+                    printf("\n   --> Post-order: ");
                     traversePostOrderPrint(root);
                 }
                 else{
